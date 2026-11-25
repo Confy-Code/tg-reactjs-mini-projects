@@ -5,20 +5,26 @@ type NumpadProps = {
     setOpClickedFalse: () => void;
     getNumber: (num: number) => void;
     resetStates: () => void;
+    setNegative: () => void;
+    setFloats: () => void;
 }
 
-export default function Numpad({ setOpClickedTrue, setOpClickedFalse, getNumber, resetStates}: NumpadProps) {
+
+export default function Numpad({ 
+    setOpClickedTrue, setOpClickedFalse, getNumber, resetStates, setNegative, setFloats }: NumpadProps) {
 
     const numpadClassName = "flex border-r border-b border-[#7b7b83] justify-center items-center text-black font-bold text-3xl hover:cursor-pointer hover:bg-[#9FA2C4]";
     const opClassName = "bg-[#f38636] text-white hover:opacity-70 hover:bg-[#f38636]";
+
     
     return(
         <main className="grid grid-cols-4 grid-rows-6 bg-[#dbdbdb] h-screen">
             <div onClick={() => resetStates()} className={`${numpadClassName}`}>
                 <span>AC</span>
             </div>
-            <div className={`${numpadClassName}`}>+/-</div>
-            <div className={`${numpadClassName}`}>%</div>
+            <div onClick={() => setNegative()}
+            className={`${numpadClassName}`}>+/-</div>
+            <div onClick={() => setOpClickedTrue('%')} className={`${numpadClassName}`}>%</div>
             <div onClick={() => setOpClickedTrue('/')} className={`${numpadClassName} ${opClassName}`}><Divide/></div>
 
             <div onClick={() => {
@@ -68,7 +74,7 @@ export default function Numpad({ setOpClickedTrue, setOpClickedFalse, getNumber,
                 getNumber(0)}} className={`${numpadClassName} col-span-2`}>
                 <span>0</span>
             </div>
-            <div className={`${numpadClassName}`}>.</div>
+            <div onClick={setFloats} className={`${numpadClassName}`}>.</div>
             <div onClick={() => setOpClickedTrue('=')} className={`${numpadClassName} ${opClassName}`}>=</div>
             
         </main>

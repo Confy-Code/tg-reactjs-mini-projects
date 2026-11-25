@@ -4,16 +4,22 @@ import Header from './components/Header'
 import Numpad from './components/Numpad'
 
 export default function App() {
-  const [OpClicked, setOpClicked] = useState(false)
+  const [opClicked, setOpClicked] = useState(false)
   const [num, setNum] = useState(0)
+  // const [float, setFloat] = 
   const [res, setRes] = useState([0])
   const [op, setOp] = useState('')
+  const [initialState, setInitialState] = useState(0)
 
   function setOpClickTrue(op_: string) {
     setOpClicked(true)
     setOp(op_)
 
-    if (res[0] == 0) {
+    if (initialState == 0) {
+      if (op_ == '%'){
+        setNum((prevNum) => prevNum / 100)
+        setInitialState(0)
+      }
       setRes([num])
     }
 
@@ -31,6 +37,9 @@ export default function App() {
         case "/":
           res[0] /= num;
           break
+        case "%":
+          res[0] /= 100;
+          break
         default:
           setRes([res[0]])
       }
@@ -38,6 +47,7 @@ export default function App() {
       setRes([res[0]])
     }
     setNum(0)
+    setInitialState((prevState) => prevState + 1)
   }
 
   function setOpClickFalse() {
@@ -53,13 +63,49 @@ export default function App() {
     setOp('')
     setRes([0])
     setOpClicked(false)
+    setInitialState(0)
   }
+
+  function setNegative(){
+    setNum(num * -1)
+  }
+
+  function plainSetNum(num_: number){
+    setNum(num_)
+    setOpClickFalse()
+  }
+
+  function setFloats(){
+    setNum((prevNum) => prevNum + 0.1)
+  }
+
+  document.addEventListener("keydown", (event) => {
+        if(event.key >= "0" && event.key <= "9"){
+            if (!opClicked){
+                setNum(Number(event.key))
+            }
+            else {}
+        }
+
+        else if (event.key == "+" || event.key == "-" || event.key == "*" || 
+            event.key == "/" || event.key == "%" || event.key == "="){
+                setOpClickTrue(event.key)
+                // console.log(event.key)
+        }
+
+        else{}
+    })
+
+
+  console.log(`num: ${num}`)
+  console.log(`res[0]: ${res[0]}`)
+  console.log(`initial State: ${initialState}`)
 
   return (
     <>
-      <Header opClicked={OpClicked} result={res} num={num}/>
+      <Header opClicked={opClicked} result={res} num={num}/>
       <Numpad setOpClickedTrue={setOpClickTrue} setOpClickedFalse={setOpClickFalse} 
-      getNumber={getNumber} resetStates={resetStates}/>
+      getNumber={getNumber} resetStates={resetStates} setNegative={setNegative} setFloats={setFloats}/>
     </>
   )
 }
