@@ -7,66 +7,59 @@ export default function App() {
   const [OpClicked, setOpClicked] = useState(false)
   const [num, setNum] = useState(0)
   const [res, setRes] = useState([0])
-  // const [op, setOp] = useState('')
+  const [op, setOp] = useState('')
 
-  function setOpClickTrue(op: string) {
-    let result: number;
+  function setOpClickTrue(op_: string) {
     setOpClicked(true)
+    setOp(op_)
 
     if (res[0] == 0) {
       setRes([num])
     }
 
-    if (res.length == 1){
-      setRes((prevArr) => [...prevArr, num])
-    }
-
     else{
       switch(op){
         case "+" :
-          result = res[0] + res[1]
+          res[0] += num;
           break;
         case "-":
-          result = res[0] - res[1]
+          res[0] -= num;
           break;
         case "*":
-          result = res[0] * res[1]
+          res[0] *= num;
           break
         case "/":
-          result = res[0] / res[1]
+          res[0] /= num;
           break
         default:
-          result = 0
+          setRes([res[0]])
       }
 
-      setRes([result])
+      setRes([res[0]])
     }
-
     setNum(0)
-
-    console.log(res)
   }
 
   function setOpClickFalse() {
     setOpClicked(false)
   }
 
-  function getNumber(num: number) {
-    setNum((prevNum) => prevNum * 10 + num)
+  function getNumber(num_: number) {
+    setNum((prevNum) => prevNum * 10 + num_) 
   }
 
-  // function calculate(op: string){
-  //   switch(op){
-  //     case '+':
-  //       num + 
-  //   }
-  // }
-
+  function resetStates(){
+    setNum(0)
+    setOp('')
+    setRes([0])
+    setOpClicked(false)
+  }
 
   return (
     <>
-      <Header opClicked={OpClicked} num={num}/>
-      <Numpad setOpClickedTrue={setOpClickTrue} setOpClickedFalse={setOpClickFalse} getNumber={getNumber}/>
+      <Header opClicked={OpClicked} result={res} num={num}/>
+      <Numpad setOpClickedTrue={setOpClickTrue} setOpClickedFalse={setOpClickFalse} 
+      getNumber={getNumber} resetStates={resetStates}/>
     </>
   )
 }

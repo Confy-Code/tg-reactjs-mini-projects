@@ -4,16 +4,17 @@ type NumpadProps = {
     setOpClickedTrue: (op: string) => void;
     setOpClickedFalse: () => void;
     getNumber: (num: number) => void;
+    resetStates: () => void;
 }
 
-export default function Numpad({ setOpClickedTrue, setOpClickedFalse, getNumber}: NumpadProps) {
+export default function Numpad({ setOpClickedTrue, setOpClickedFalse, getNumber, resetStates}: NumpadProps) {
 
     const numpadClassName = "flex border-r border-b border-[#7b7b83] justify-center items-center text-black font-bold text-3xl hover:cursor-pointer hover:bg-[#9FA2C4]";
     const opClassName = "bg-[#f38636] text-white hover:opacity-70 hover:bg-[#f38636]";
     
     return(
         <main className="grid grid-cols-4 grid-rows-6 bg-[#dbdbdb] h-screen">
-            <div onClick={() => setOpClickedTrue('AC')} className={`${numpadClassName}`}>
+            <div onClick={() => resetStates()} className={`${numpadClassName}`}>
                 <span>AC</span>
             </div>
             <div className={`${numpadClassName}`}>+/-</div>
@@ -21,14 +22,16 @@ export default function Numpad({ setOpClickedTrue, setOpClickedFalse, getNumber}
             <div onClick={() => setOpClickedTrue('/')} className={`${numpadClassName} ${opClassName}`}><Divide/></div>
 
             <div onClick={() => {
+                getNumber(7)
                 setOpClickedFalse()
-                getNumber(7)}} 
+                }}
                 className={`${numpadClassName}`}>
                 <span>7</span>
             </div>
             <div onClick={() => {
                 setOpClickedFalse()
-                getNumber(8)}} className={`${numpadClassName}`}>8</div>
+                getNumber(8)}} 
+                className={`${numpadClassName}`}>8</div>
             <div onClick={() => {
                 setOpClickedFalse()
                 getNumber(9)}} className={`${numpadClassName}`}>9</div>
@@ -66,7 +69,7 @@ export default function Numpad({ setOpClickedTrue, setOpClickedFalse, getNumber}
                 <span>0</span>
             </div>
             <div className={`${numpadClassName}`}>.</div>
-            <div className={`${numpadClassName} ${opClassName}`}>=</div>
+            <div onClick={() => setOpClickedTrue('=')} className={`${numpadClassName} ${opClassName}`}>=</div>
             
         </main>
     )
